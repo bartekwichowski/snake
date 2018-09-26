@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
 
         JFrame frame = new JFrame();
-        Gameplay gameplay = new Gameplay();
+        Game game = new Game();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
         frame.setBounds(dim.width/2-WINDOW_WIDTH/2, dim.height/2-WINDOW_HEIGHT/2, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -17,6 +17,6 @@ public class Main {
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(gameplay);
+        frame.add(game);
     }
 }

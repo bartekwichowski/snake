@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.*;
 
-public class Gameplay extends JPanel implements KeyListener, ActionListener{
+public class Game extends JPanel implements KeyListener, ActionListener{
 
     int width = 400;
     int height = 400;
@@ -38,8 +38,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     private int delay = 60;
     boolean isGameOver = false;
 
-
-    public Gameplay() {
+    public Game() {
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -49,7 +48,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
         button.addActionListener(e -> {
             revalidateGame();
             isGameOver = false;
-//            timer.restart();
+            timer.restart();
             timer.start();
             grabFocus();
             repaint();
@@ -93,8 +92,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
         g.setColor(Color.WHITE);
         g.fillRect(0,0, width, height);
 
-        element = new ImageIcon(Gameplay.class.getResource("element.png"));
-        increase = new ImageIcon(Gameplay.class.getResource("increase.png"));
+        element = new ImageIcon(Game.class.getResource("element.png"));
+        increase = new ImageIcon(Game.class.getResource("increase.png"));
 
         increase.paintIcon(this, g, newElement.x * size, newElement.y * size);
 
@@ -107,7 +106,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
         }
 
         if (isGameOver) {
-            gameOver = new ImageIcon(Gameplay.class.getResource("game-over.png"));
+            gameOver = new ImageIcon(Game.class.getResource("game-over.png"));
             gameOver.paintIcon(this, g, (width/2) - size, (height/2) - size);
             timer.stop();
         }
@@ -115,18 +114,21 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
     }
 
     private boolean isSnakeEatHimself() {
-        Position head = snake.getFirst();
-
         if (snake.size() < 1) {
             return false;
         }
-        int i = 0;
+
         for (Position p : snake) {
-            if (i > 0 && head.equals(p)) {
-                return true;
+            if (snake.getFirst().equals(p)) {
+
             }
-            i++;
         }
+//        for (int i = 0; i < snake.size(); i++) {
+//            if (i > 0 && head.equals(snake.getFirst())) {
+//                return true;
+//            }
+//            i++;
+//        }
         return false;
     }
 
@@ -233,16 +235,17 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener{
             }
         }
 
-        snake.addFirst(new Position(x, y));
-        if (!isNewElementEaten()) {
-            empties.remove(snake.getLast());
-            snake.removeLast();
+        if (right || left || up || down) {
+            snake.addFirst(new Position(x, y));
+            if (!isNewElementEaten()) {
+                empties.remove(snake.getLast());
+                snake.removeLast();
+            }
+            empties.remove(snake.getFirst());
+            mapSnakeToArea();
+            isGameOver = isSnakeEatHimself();
+            repaint();
         }
-        empties.remove(snake.getFirst());
-        mapSnakeToArea();
-        isGameOver = isSnakeEatHimself();
-
-        repaint();
     }
 
 
